@@ -5,6 +5,8 @@ import operator
 import numpy as np
 from pprint import pprint
 
+import random
+
 # Travail sur les donnees:
 # On importe le corpus movie_reviews de nltk
 from nltk.corpus import movie_reviews
@@ -108,8 +110,7 @@ def get_counts_matrix(Ids, n):
 
 # Choisir n, et obtenir la matrice demandee pour le corpus movie_reviews.
 # Verifier que la matrice a la taille attendu avec la methode shape
-n = 10
-test = np.matrix([[1, 2], [3, 4]])
+n = 2000
 M = np.array(get_counts_matrix(Ids, n))
 
 # PCA
@@ -127,22 +128,22 @@ from matplotlib.mlab import PCA
 
 #PCA = Analyse en Composante Principale
 
-#MR_PCA = PCA(M)
+MR_PCA = PCA(M)
 #Pour obtenir les donnees qui nous interesse, il faut utiliser MR_PCA.Y
 """
 Ca nous met les valeurs dans un nouveau repere (n dimensions)
 1ere dimension : nb de critiques (2000 points)
 """
 
-"""
+
 def plot_PCA(PCA_projection):
     #x_neg -> Prendre les 1000 premieres dimensions X  pour les commentaires negatifs
     #x_pos -> Prendre les 1000 premieres dimensions X  pour les commentaires positifs
     
-    x_neg = MR_PCA.X[1000:]
-    y_neg = #
-    x_pos = #
-    y_pos = #
+    x_neg = PCA_projection[1000:][0]
+    y_neg = PCA_projection[1000:][1]
+    x_pos = PCA_projection[:1000][0]
+    y_pos = PCA_projection[:1000][1]
 
     plt.figure()
     plt.xlabel('First component')
@@ -151,10 +152,11 @@ def plot_PCA(PCA_projection):
     plt.plot(x_neg,y_neg,'ro')
     plt.plot(x_pos,y_pos,'bo')
     plt.savefig("PCA.eps", format='eps', dpi=1000)
+    plt.show()
 
-"""
-
-"""
+    
+plot_PCA(MR_PCA.Y)
+    
 
 # Perceptron
 # On utilise la classe Perceptron: elle comprend un constructeur lui fournit donnees et parametres
@@ -187,8 +189,8 @@ class perceptron(object):
             if not errors.size:
                 break
             counter += 1
-            # Completer le code pour mettre a jour l'attribut self.weights 
-            self.weights += self.l_r * #
+            # Completer le code pour mettre a jour l'attribut self.weights
+            self.weights += self.l_r * (np.dot(self.data,labels)) / counter
             # Si notre modele s'est ameliore, on garde en memoire ses parametres
             if (errors.size < best_error_rate):
                 best_weights = self.weights
@@ -205,13 +207,22 @@ class perceptron(object):
 
 # Une fois la classe completee, creer un vecteur contenant les labels, creer la classe associee a nos donnes,
 # et entrainer et tester le perceptrons sur les labels.
-"""
+#tab = [0 for i in range(1000)]
+tab = []
+for i in range(2000) :
+    tab.append(random.randint(0,1))
+
+y = tab
+model = [0 for i in range(2000)]
+
+print("size Y", len(y), "size M", len(M[0]))
+random.shuffle(M)
 
 
-"""
-y = 
-model =
-"""
+perceptron = perceptron(M, 1000, None, 0.1)
+print(perceptron.train(y))
+print(perceptron.test(y))
+
 
 """
  
